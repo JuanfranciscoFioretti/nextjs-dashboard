@@ -1,4 +1,4 @@
-export default function customers() {
+export default function Customers() {
     return (
         <div>
             <h1>Customers</h1>
