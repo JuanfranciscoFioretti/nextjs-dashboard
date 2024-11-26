@@ -1,0 +1,120 @@
+// {
+//   "extends": [
+//     "next/core-web-vitals",
+//     "next/typescript"
+//   ]
+// }
+
+
+
+
+
+// {
+//   "extends": [
+//     "next/core-web-vitals", // Recomendación de Next.js
+//     "plugin:@typescript-eslint/recommended" // Reglas de TypeScript
+//   ],
+//   "parser": "@typescript-eslint/parser",
+//   "plugins": ["@typescript-eslint"],
+//   "rules": {
+//     "@typescript-eslint/no-unused-expressions": [
+//       "warn",
+      
+//       {
+//         "argsIgnorePattern": "^_",
+//         "varsIgnorePattern": "^_",
+        
+//         "allowShortCircuit": true,
+//         "allowTernary": true,
+//         "allowTaggedTemplates": true
+//       }
+//     ]
+//   }
+// }
+
+
+
+
+// {
+//   "extends": [
+//     "next/core-web-vitals", // Recomendación de Next.js
+//     "plugin:@typescript-eslint/recommended" // Reglas de TypeScript
+//   ],
+//   "parser": "@typescript-eslint/parser",
+//   "plugins": ["@typescript-eslint"],
+//   "rules": {
+//     "@typescript-eslint/no-unused-expressions": [
+//       "warn",
+//       {
+//         "allowShortCircuit": true,
+//         "allowTernary": true,
+//         "allowTaggedTemplates": true
+//       }
+//     ],
+//     "@typescript-eslint/no-unused-vars": [
+//       "warn",
+//       {
+//         "argsIgnorePattern": "^_",
+//         "varsIgnorePattern": "^_"
+//       }
+//     ]
+//   }
+// }
+
+
+
+{
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-unused-expressions": [
+      "warn",
+      {
+        "allowShortCircuit": true,
+        "allowTernary": true,
+        "allowTaggedTemplates": true
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": [
+      "warn",
+      {
+        "allowExpressions": true,
+        "allowTypedFunctionExpressions": true,
+        "allowHigherOrderFunctions": true,
+        "allowDirectConstAssertionInArrowFunctions": true,
+        "allowConciseArrowFunctionExpressionsStartingWithVoid": true,
+        "allowedNames": ["render", "getStaticProps", "getServerSideProps", "getInitialProps"]
+      }
+    ],
+    "no-console": [
+      "warn",
+      {
+        "allow": ["warn", "error"]
+      }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "off"
+  },
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": "off"
+      }
+    }
+  ]
+}
+
+
+

@@ -10,7 +10,12 @@ export default function Search() {
   const { replace } = useRouter();
 
   const handleSearch = useDebouncedCallback((term) => { 
-    console.log(`Searching... ${term}`);
+
+    // console.log(`Searching... ${term}`);
+    // ONLY ON DEVELOPMENT
+    // if (process.env.NODE_ENV === 'development') {
+    //   console.log(`Searching... ${term}`);
+    // }
 
     const params = new URLSearchParams(searchParams);
     params.set('page', '1');
