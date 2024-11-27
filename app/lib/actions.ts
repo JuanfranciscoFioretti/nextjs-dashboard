@@ -1,99 +1,12 @@
-// 'use server';
-
-// import { z } from 'zod';
-// import { sql } from '@vercel/postgres';
-// import { revalidatePath } from 'next/cache';
-// import { redirect } from 'next/navigation';
-// // import { useRouter } from 'next/router';
-
-// const FormSchema = z.object({
-//     id: z.string(),
-//     customerId: z.string(),
-//     amount: z.coerce.number(),
-//     status: z.enum(['pending', 'paid']),
-//     date: z.string(),
-// });
-
-// const CreateInvoice = FormSchema.omit({ id: true, date: true});
-
-// export async function createInvoice(formData: FormData) {
-
-//     const { customerId, amount, status} = CreateInvoice.parse({
-//         customerId: formData.get('customerId'),
-//         amount: formData.get('amount'),
-//         status: formData.get('status'),
-//     });
-//     const amountInCents = amount * 100;
-//     const date = new Date().toISOString().split('T')[0];
-
-//     try {
-//         await sql`
-//             INSERT INTO invoices (customer_id, amount, status, date)
-//             VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
-//         `;
-//     } catch (_error) {
-//         return {
-//             message: 'Database Error: Failed to Create the Invoice.',
-//         };
-//     }
-
-//     revalidatePath('/dashboard/invoices');
-//     redirect('/dashboard/invoices');
-//     // For testing
-//     // console.log(formData);
-// }
-
-
-// const UpdateInvoice = FormSchema.omit({ id: true, date: true });
-
-// export async function updateInvoice(id: string, formData: FormData) {
-//     const { customerId, amount, status } = UpdateInvoice.parse({
-//         customerId: formData.get('customerId'),
-//         amount: formData.get('amount'),
-//         status: formData.get('status'),
-//     });
-
-//     const amountInCents = amount * 100;
-
-//     try {
-//         await sql`
-//             UPDATE invoices
-//             SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-//             WHERE id = ${id}
-//         `;
-//     } catch (_error) {
-//         return { message: 'Database Error: Failed to Update the Invoice.'}
-//     }
-
-//     console.log('Redirecting to /dashboard/invoices');
-//     revalidatePath('/dashboard/invoices');
-//     redirect('/dashboard/invoices');
-//     // const router = useRouter();
-//     // router.push('/dashboard/invoices');
-// }
-
-// export async function deleteInvoice(id: string) {
-//     // throw new Error('Failed to Delete Invoice');
-
-//     try {
-//         await sql`DELETE FROM invoices WHERE id = ${id}`;
-//         revalidatePath('/dashboard/invoices');
-//         return { message: 'Deleted Invoice Successfully.'}
-//     } catch (_error) {
-//         return { message: 'Database Error: Failed to Delete the Invoice.' }
-//     }
-// }
-// 
-
-
-
-// UPGRADED WITH CLAUDE AI: 
 'use server';
 
 import { z } from 'zod';
 import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 
 // Base schema definition for invoices
 const FormSchema = z.object({
@@ -134,49 +47,7 @@ const FormSchema = z.object({
     }
 
 
-    // FIRST FORM VALIDATION (CLIENT-SIDE)
-    // export async function createInvoice(prevState: State, formData: FormData): Promise<ActionResponse> {
-    // try {
-    //     // Validating form data
-    //     const validatedData = CreateInvoice.safeParse({
-    //     customerId: formData.get('customerId'),
-    //     amount: formData.get('amount'),
-    //     status: formData.get('status'),
-    //     });
-
-    //     if (!validatedData.success) {
-    //         return {
-    //             errors: validatedData.error.flatten().fieldErrors,
-    //             message: 'Missing fields. Failed to Create Invoice.'
-    //         };
-    //     }
-
-    //     const amountInCents = validatedData.amount * 100;
-    //     const date = new Date().toISOString().split('T')[0];
-
-    //     await sql`
-    //     INSERT INTO invoices (customer_id, amount, status, date)
-    //     VALUES (${validatedData.customerId}, ${amountInCents}, ${validatedData.status}, ${date})
-    //     `;
-
-    //     // revalidatePath('/dashboard/invoices');
-    //     // redirect('/dashboard/invoices');
-
-    //     // return { success: true, message: 'Invoice created successfully' };
-    // } catch (error) {
-    //     console.error('Failed trying to create invoice: ', error);
-    //     return {
-    //     success: false,
-    //     message: 'Failed trying to create invoice',
-    //     error: error instanceof Error ? error.message : 'Unknown Error',
-    //     };
-    // }
-    //     revalidatePath('/dashboard/invoices');
-    //     redirect('/dashboard/invoices');
-    // }
-
-
-    // SECOND FORM VALIDATION (SERVER-SIDE)
+    // Form Validation (SERVER-SIDE)
     export async function createInvoice(prevState: State, formData: FormData) {
         // Validate form using Zod
         const validatedFields = CreateInvoice.safeParse({
@@ -216,42 +87,7 @@ const FormSchema = z.object({
             redirect('/dashboard/invoices');
         }
 
-    // FIRST UPDATE FORM VALIDATION (CLIENT - SIDE)
-    // export async function updateInvoice(id: string, formData: FormData): Promise<ActionResponse> {
-    // try {
-    //     const validatedData = UpdateInvoice.parse({
-    //     customerId: formData.get('customerId'),
-    //     amount: formData.get('amount'),
-    //     status: formData.get('status'),
-    //     });
-
-    //     const amountInCents = validatedData.amount * 100;
-
-    //     await sql`
-    //     UPDATE invoices
-    //     SET customer_id = ${validatedData.customerId}, 
-    //         amount = ${amountInCents}, 
-    //         status = ${validatedData.status}
-    //     WHERE id = ${id}
-    //     `;
-        
-    //     // revalidatePath('/dashboard/invoices');
-    //     // redirect('/dashboard/invoices');
-        
-    //     // return { success: true, message: 'Invoice updated successfully' };
-    // } catch (error) {
-    //     console.error('Failed trying to update invoice: ', error);
-    //     return {
-    //     success: false,
-    //     message: 'Failed trying to update invoice',
-    //     error: error instanceof Error ? error.message : 'Unknown Error',
-    //     };
-    // }
-    //     revalidatePath('/dashboard/invoices');
-    //     redirect('/dashboard/invoices');
-    // }
-
-
+    // Invoice updating
     export async function updateInvoice(
         id: string,
         prevState: State,
@@ -287,7 +123,7 @@ const FormSchema = z.object({
             redirect('/dashboard/invoices');
         }
 
-
+    // Invoice Deleting
     export async function deleteInvoice(id: string): Promise<ActionResponse> {
     try {
         await sql`DELETE FROM invoices WHERE id = ${id}`;
@@ -303,5 +139,25 @@ const FormSchema = z.object({
         message: 'Failed trying to delete the invoice',
         error: error instanceof Error ? error.message : 'Unknown Error',
         };
+    }
+}
+
+
+export async function authenticate(
+    prevState: string | undefined,
+    formData: FormData,
+) {
+    try {
+        await signIn('credentials', formData);
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case 'CredentialsSignin':
+                return 'Invalid credentials.';
+            default:
+                return 'Something went wrong.';
+            }
+        }
+        throw error;
     }
 }
