@@ -1,21 +1,26 @@
 import Image from 'next/image';
-import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import {
   // CustomersTableType,
   FormattedCustomersTable,
 } from '@/app/lib/definitions';
+import { fetchCustomers } from '@/app/lib/data';
+import { lusitana } from '@/app/ui/fonts';
+import { Suspense } from 'react';
+import { TableRowSkeleton } from '../skeletons';
 
 export default async function CustomersTable({
   customers,
+  // query,
+  // currentPage,
 }: {
   customers: FormattedCustomersTable[];
+  // query: string;
+  // currentPage: number;
 }) {
+
   return (
     <div className="w-full">
-      <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
-        Customers
-      </h1>
       <Search/>
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">
@@ -38,7 +43,7 @@ export default async function CustomersTable({
                               width={28}
                               height={28}
                             />
-                            <p>{customer.name}</p>
+                            <p className={`${lusitana.className}`}>{customer.name}</p>
                           </div>
                         </div>
                         <p className="text-sm text-gray-500">
@@ -84,34 +89,36 @@ export default async function CustomersTable({
                 </thead>
 
                 <tbody className="divide-y divide-gray-200 text-gray-900">
-                  {customers.map((customer) => (
-                    <tr key={customer.id} className="group">
-                      <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
-                        <div className="flex items-center gap-3">
-                          <Image
-                            src={customer.image_url}
-                            className="rounded-full"
-                            alt={`${customer.name}'s profile picture`}
-                            width={28}
-                            height={28}
-                          />
-                          <p>{customer.name}</p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.email}
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_invoices}
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_pending}
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
-                        {customer.total_paid}
-                      </td>
-                    </tr>
-                  ))}
+                  <Suspense fallback={<TableRowSkeleton/>}>
+                    {customers.map((customer) => (
+                      <tr key={customer.id} className="group">
+                        <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
+                          <div className="flex items-center gap-3">
+                            <Image
+                              src={customer.image_url}
+                              className="rounded-full"
+                              alt={`${customer.name}'s profile picture`}
+                              width={28}
+                              height={28}
+                            />
+                            <p>{customer.name}</p>
+                          </div>
+                        </td>
+                        <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
+                          {customer.email}
+                        </td>
+                        <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
+                          {customer.total_invoices}
+                        </td>
+                        <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
+                          {customer.total_pending}
+                        </td>
+                        <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
+                          {customer.total_paid}
+                        </td>
+                      </tr>
+                    ))}
+                  </Suspense>
                 </tbody>
               </table>
             </div>

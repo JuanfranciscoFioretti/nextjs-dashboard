@@ -75,9 +75,16 @@ export type FormattedCustomersTable = {
   total_paid: string;
 };
 
+// ACA AGREGUE CAMPOS DE MAS
 export type CustomerField = {
   id: string;
   name: string;
+  // A PARTIR DE ACA
+  // email: string;
+  // image_url: string;
+  // total_invoices: number;
+  // total_pending: string;
+  // total_paid: string;
 };
 
 export type InvoiceForm = {

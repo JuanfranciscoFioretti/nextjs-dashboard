@@ -5,29 +5,13 @@ import { lusitana } from '@/app/ui/fonts';
 import { Suspense } from 'react';
 import { RevenueChartSkeleton, LatestInvoicesSkeleton, CardsSkeleton } from '@/app/ui/skeletons';
 
-// import { 
-//     fetchRevenue, 
-//     fetchLatestInvoices, 
-//     fetchCardData, 
-// } from '@/app/lib/data';
+import { Metadata } from 'next';
 
-// const links = 
-//     {   
-//         name: 'Invoices',
-//         href: '/dashboard/invoices',
-//     }
-
-
+export const metadata: Metadata = {
+    title: 'Dashboard',
+};
 
 export default async function Dashboard() {
-    // const revenue = await fetchRevenue();
-    // const latestInvoices = await fetchLatestInvoices();
-    // const {
-    //     numberOfInvoices,
-    //     numberOfCustomers,
-    //     totalPaidInvoices,
-    //     totalPendingInvoices,
-    // } = await fetchCardData();
 
     return (
         <main>

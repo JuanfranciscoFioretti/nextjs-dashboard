@@ -224,6 +224,7 @@
 import { sql } from '@vercel/postgres';
 import {
   CustomerField,
+  FormattedCustomersTable,
   CustomersTableType,
   InvoiceForm,
   InvoicesTable,
@@ -376,20 +377,55 @@ export async function fetchInvoiceById(id: string): Promise<InvoiceForm> {
   }
 }
 
+
+
+
+
+
+
+
+
+
+// //  Fetch customers
+// export async function fetchCustomers(): Promise<CustomerField[]> {
+//   try {
+//     const data = await sql<CustomerField>`SELECT
+//         id,
+//         name
+//       FROM customers
+//       ORDER BY name ASC`;
+
+//     return data.rows;
+//   } catch (_err) {
+//     throw new Error('Failed to fetch all customers.');
+//   }
+// }
+
 //  Fetch customers
-export async function fetchCustomers(): Promise<CustomerField[]> {
+export async function fetchCustomers(): Promise<FormattedCustomersTable[]> {
   try {
-    const data = await sql<CustomerField>`SELECT
+    const data = await sql<FormattedCustomersTable>`SELECT
         id,
-        name
+        name,
+        email,
+        image_url
       FROM customers
       ORDER BY name ASC`;
 
     return data.rows;
   } catch (_err) {
+    console.error(_err);
     throw new Error('Failed to fetch all customers.');
   }
 }
+
+
+
+
+
+
+
+
 
 //  Fetch filtered customers
 export async function fetchFilteredCustomers(query: string): Promise<CustomersTableType[]> {
