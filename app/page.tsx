@@ -14,11 +14,16 @@ export default function Page() {
         <div className="flex flex-col justify-center gap-6 rounded-lg bg-gray-50 px-6 py-10 md:w-2/5 md:px-20">
         
           <p className={`${lusitana.className} antialiased text-xl text-gray-800 md:text-3xl md:leading-normal`}>
-            <strong>Welcome to Acme.</strong> This is the example for the{' '}
-            <a href="https://nextjs.org/learn/" className="text-blue-500">
-              Next.js Learn Course
+            <strong>Welcome to Acme Dashboard.</strong> This is the remake of the original dashboard developed for {' '}
+            <a href="https://www.biogassrl.com.ar/?fbclid=IwZXh0bgNhZW0CMTAAAR7sAejmBavD2BsNQHvE9xaB_zE8OwfKsN2p9F-VzVUyN89t13RsjKnu-wNxsA_aem_xTMGTGqwlpMoYYRmPux3RQ" target='_BLANK' className='text-blue-500'>
+                "Bio Gas"
             </a>
-            , brought to you by Vercel.
+            , a company based in Argentina.
+            Feel free to log in and take a look.
+            <br />
+            <b>
+              🫣 The user is not: user@nextmail.com and the password is definetly not 123456 🤫
+            </b>
           </p>
           <Link
             href="/dashboard"
